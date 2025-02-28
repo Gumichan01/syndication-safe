@@ -22,6 +22,7 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Timeout
 import java.io.IOException
 import java.io.InterruptedIOException
@@ -81,14 +82,14 @@ internal class CompletableCall : Call {
     done.countDown()
   }
 
-  override fun enqueue(callback: Callback) {
+  override fun enqueue(responseCallback: Callback) {
     synchronized(lock) {
       if (exception != null) {
-        callback.onFailure(this, IOException(exception))
+        responseCallback.onFailure(this, IOException(exception))
       } else if (response != null) {
-        callback.onResponse(this, response!!)
+        responseCallback.onResponse(this, response!!)
       } else {
-        this.callback = callback
+        this.callback = responseCallback
       }
     }
   }
@@ -110,7 +111,7 @@ internal class CompletableCall : Call {
   private fun createMockResponse(stringResponse: String, successful: Boolean = true): Response {
     return Response.Builder()
         .apply {
-          body(ResponseBody.create(null, stringResponse))
+          body(stringResponse.toResponseBody(null))
           code(if (successful) 200 else 500)
           message("OK 200")
           protocol(Protocol.HTTP_1_1)

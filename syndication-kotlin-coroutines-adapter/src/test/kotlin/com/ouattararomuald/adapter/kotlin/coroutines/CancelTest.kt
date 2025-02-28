@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test
 import java.io.IOException
 import java.lang.reflect.Type
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 class CancelTest {
   companion object {
     const val FAKE_URL = "https://www.example.ci/file.mp4"
@@ -80,6 +81,7 @@ class CancelTest {
     assertThat(call.isCanceled()).isTrue()
   }
 
+  @OptIn(ExperimentalCoroutinesApi::class)
   @Test fun `cancel on deserialization error`() {
     val type = typeOf<Deferred<RssFeed>>()
     val callAdapter =
