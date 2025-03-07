@@ -28,14 +28,17 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+    //noinspection DifferentKotlinGradleVersion
+      classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
   }
 }
 
 allprojects {
   if (JavaVersion.current().isJava8Compatible()) {
-    tasks.withType(Javadoc) {
-      options.addStringOption('Xdoclint:none', '-quiet')
+    tasks.withType(Javadoc).tap {
+      configureEach {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
     }
   }
 }
@@ -45,7 +48,7 @@ subprojects {
     mavenCentral()
   }
 
-  tasks.withType(Javadoc).all { enabled = false } // FIXME: build fails without this.
+  tasks.withType(Javadoc).configureEach { enabled = false } // FIXME: build fails without this.
 
   group = GROUP
   version = VERSION_NAME
