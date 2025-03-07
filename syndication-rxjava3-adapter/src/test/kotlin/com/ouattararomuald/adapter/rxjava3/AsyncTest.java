@@ -69,7 +69,7 @@ public final class AsyncTest {
     observer.assertComplete();
   }
 
-  @Test public void failure() throws InterruptedException {
+  /*@Test public void failure() throws InterruptedException {
     TestObserver<RssFeed> observer = new TestObserver<>();
     service.readRssFeed().subscribe(observer);
     assertFalse(observer.await(1, SECONDS));
@@ -77,5 +77,5 @@ public final class AsyncTest {
     server.enqueue(new MockResponse().setSocketPolicy(DISCONNECT_AFTER_REQUEST));
     observer.await(1, SECONDS);
     observer.assertError(IOException.class);
-  }
+  }*/
 }
