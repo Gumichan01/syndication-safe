@@ -71,11 +71,10 @@ class CoroutineCallAdapterFactory : CallAdapter.Factory() {
           deferred.completeExceptionally(e)
         }
 
-        @Suppress("UNCHECKED_CAST")
         override fun onResponse(call: Call, response: Response) {
           if (response.isSuccessful) {
             try {
-              deferred.complete(parseXml(response.body!!.string(), clazz))
+              deferred.complete(parseXml(response.body.string(), clazz))
             } catch (e: DeserializationException) {
               deferred.completeExceptionally(e)
             }
