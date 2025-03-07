@@ -9,6 +9,7 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
@@ -91,7 +92,7 @@ internal class DefaultCallAdapterFactoryTest {
   private fun createMockResponse(stringResponse: String, successful: Boolean = true): Response {
     return Response.Builder()
         .apply {
-          body(ResponseBody.create(null, stringResponse))
+          body(stringResponse.toResponseBody(null))
           code(if (successful) 200 else 500)
           message("OK 200")
           protocol(Protocol.HTTP_1_1)
