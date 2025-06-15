@@ -45,8 +45,7 @@ final class CallExecuteObservable<SyndicationType> extends Observable<Syndicatio
     }
 
     boolean terminated = false;
-    try {
-      Response response = call.execute();
+    try (Response response = call.execute()) {
       if (!disposable.isDisposed()) {
         if (response.isSuccessful()) {
           observer.onNext(parser.parse(response.body().string()));
